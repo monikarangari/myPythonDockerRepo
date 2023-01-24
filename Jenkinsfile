@@ -12,7 +12,12 @@ steps{checkout([$class: 'GitSCM', branches: [[name: '*/master']], extensions: []
   
 stage('docker image')
 {
-steps{sh 'docker build -t demo-repository .' }
+steps{// This step should not normally be used in your script. Consult the inline help for details.
+withDockerRegistry(credentialsId: 'ecr:us-east-1:awsecr', url: '652912600783.dkr.ecr.us-east-1.amazonaws.com/demo-repository')
+  {
+    sh 'docker build -t 652912600783.dkr.ecr.us-east-1.amazonaws.com/demo-repository:01'
+    sh 'docker push 652912600783.dkr.ecr.us-east-1.amazonaws.com/demo-repository:01'
+}}
 }
 
 }
